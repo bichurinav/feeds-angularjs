@@ -1,0 +1,49 @@
+<div class="news-filter" ng-switch on="mode">
+  <!-- default filter -->
+  <div ng-switch-when="default">
+    <form ng-submit="setFilter($event)" action="#">
+      <div class="row gap-3">
+        <div class="col-auto p-0">
+          <!-- country-filter -->
+          <select name="country" class="form-select form-select-sm">
+            <option value="" selected>Страна</option>
+            <option
+              ng-repeat="countryCode in countryList"
+              value="{{ countryCode }}"
+            >
+              {{ countryCode }}
+            </option>
+          </select>
+        </div>
+        <div class="col-auto p-0">
+          <!-- category-filter -->
+          <select name="category" class="form-select form-select-sm">
+            <option value="general" selected>Категория</option>
+            <option ng-repeat="category in categoryList" value="{{ category }}">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+        <div class="col-auto p-0">
+          <button type="submit" class="btn btn-outline-primary btn-sm">
+            Фильтровать
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- search filter -->
+  <div ng-switch-when="search">
+    <form ng-submit="setFilter($event)" action="#">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          ng-model="fieldSearch.value"
+          placeholder="Введите название новости..."
+        />
+        <button class="btn btn-outline-primary" type="submit">Поиск</button>
+      </div>
+    </form>
+  </div>
+</div>

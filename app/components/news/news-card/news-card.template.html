@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-header fw-bold text-secondary fs-6 px-4">
+    {{ card.title }}
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="order-2 order-sm-1 col-sm-7 col-xl-9 d-flex flex-column">
+        <p class="card-text">
+          {{ card.description || 'Описание отсутствует' }}
+        </p>
+        <a
+          href="{{ card.url }}"
+          target="_blank"
+          rel="nofollow"
+          class="mt-auto align-self-start btn btn-primary"
+        >
+          Подробнее
+        </a>
+      </div>
+      <div class="order-1 order-sm-2 col-sm-5 col-xl-3">
+        <img
+          class="card__image"
+          src="{{ getSrcImage(card.urlToImage) }}"
+          alt=""
+          width="100%"
+        />
+      </div>
+    </div>
+  </div>
+</div>

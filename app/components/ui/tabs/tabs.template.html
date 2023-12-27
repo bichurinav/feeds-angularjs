@@ -1,0 +1,12 @@
+<ul class="nav nav-tabs mt-4">
+  <li class="nav-item" ng-repeat="tab in tabs">
+    <a
+      class="nav-link"
+      ng-class="activeClass(tab)"
+      tabindex="{{ activeClass(tab) ? '-1': '0' }}"
+      href="#{{ tab.path }}"
+    >
+      {{ tab.title }}
+    </a>
+  </li>
+</ul>
