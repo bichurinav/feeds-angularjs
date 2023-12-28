@@ -38,24 +38,27 @@ angular.module("newsFilter", []).component("newsFilter", {
         var category = "";
         var search = $scope.fieldSearch.value;
 
-        if ($scope.mode === "default") {
+        if (
+          event.target.elements["country"] &&
+          event.target.elements["category"]
+        ) {
           country = event.target.elements["country"].value;
           category = event.target.elements["category"].value;
-          if (isRepeatFilter(country, category, null)) {
-            return;
-          }
-          filterService.country = country;
-          filterService.category = category;
-        } else {
-          if (isRepeatFilter(null, null, search)) {
-            return;
-          }
-          filterService.q = search;
-          $scope.fieldSearch.value = "";
-          if (filterService.q === "") {
-            return;
-          }
         }
+
+        if (isRepeatFilter(country, category, search)) {
+          return;
+        }
+
+        filterService.country = country;
+        filterService.category = category;
+        filterService.q = search;
+
+        if ($scope.mode === "search") {
+          $scope.fieldSearch.value = "";
+        }
+
+        if ($scope.mode === "search" && filterService.q === "") return;
 
         $scope.getNews();
       };
