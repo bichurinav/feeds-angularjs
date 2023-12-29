@@ -1,6 +1,6 @@
 <div class="news-list">
   <!-- FILTER -->
-  <news-filter mode="filterMode" get-news="getNews" kek="kek"></news-filter>
+  <news-filter mode="filterMode" get-news="getNews"></news-filter>
 
   <!-- ERROR MESSAGE -->
   <div ng-if="errorMessage" class="alert alert-danger" role="alert">
@@ -15,26 +15,28 @@
   </div>
 
   <!-- LIST CARDS -->
-  <div class="row gap-2" ng-if="articles.length > 0">
+  <div class="row gap-2" ng-if="newsData.articles.length > 0">
     <news-card
       class="col-12"
-      ng-repeat="card in articles"
+      ng-repeat="card in newsData.articles"
       data="card"
     ></news-card>
   </div>
 
-  <p ng-if="articles.length === 0 && !isLoading">Новости отсутствуют :(</p>
+  <p ng-if="newsData.articles.length === 0 && !isLoading">
+    Новости отсутствуют :(
+  </p>
 
   <!-- PAGINATIOM -->
   <ul
-    ng-if="articles.length > 0 || errorMessage"
+    ng-if="newsData.articles.length > 0 || errorMessage"
     uib-pagination
     previous-text="<"
     next-text=">"
-    total-items="total"
-    ng-model="currentPage"
-    ng-change="changePage(currentPage)"
-    max-size="5"
+    total-items="newsData.total"
+    ng-model="newsData.currentPage"
+    ng-change="changePage(newsData.currentPage)"
+    max-size="newsData.pageSize"
     class="pagination mt-3"
     boundary-link-numbers="true"
     rotate="true"

@@ -11,11 +11,9 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
     "tabService",
     "filterService",
     function ($scope, newsDataService, tabService, filterService) {
-      $scope.total = 0;
-      $scope.articles = [];
       $scope.filterMode = "";
       $scope.errorMessage = "";
-      $scope.currentPage = newsDataService.currentPage;
+      $scope.newsData = newsDataService;
 
       function getNews() {
         $scope.isLoading = true;
@@ -25,10 +23,10 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
         };
 
         if (tabService.currentTab.code === "top-headlines") {
-          params.category = filterService.category;
-          params.country = filterService.country;
+          params.category = filterService.filters.category;
+          params.country = filterService.filters.country;
         } else {
-          params.q = filterService.q;
+          params.q = filterService.filters.q;
         }
 
         newsDataService.getNews(
@@ -38,13 +36,10 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
 
             if (res.status === "error") {
               $scope.errorMessage = res.message;
-              $scope.articles = [];
               return;
             }
 
             $scope.errorMessage = "";
-            $scope.total = res.data.totalResults;
-            $scope.articles = res.data.articles;
           },
           params
         );
