@@ -11,54 +11,32 @@ angular.module("newsFilter", []).component("newsFilter", {
     "filterService",
     "newsDataService",
     function ($scope, filterService, newsDataService) {
-      $scope.countryList = filterService.countryCodeList;
-      $scope.categoryList = filterService.categoryList;
-      $scope.fieldSearch = { value: "" };
+      $scope.fields = {
+        country: "",
+        category: "general",
+        search: "",
+      };
 
-      function isRepeatFilter(country, category, q) {
-        if (
-          $scope.mode === "default" &&
-          filterService.country === country &&
-          filterService.category === category
-        ) {
-          return true;
-        }
-
-        if ($scope.mode === "search" && filterService.q === q) return true;
-
-        return false;
-      }
+      $scope.filterService = filterService;
 
       $scope.setFilter = function (event) {
         event.preventDefault();
 
         newsDataService.currentPage = 1;
 
-        var country = "";
-        var category = "";
-        var search = $scope.fieldSearch.value;
+        filterService.filters.country = $scope.fields.country;
+        filterService.filters.category = $scope.fields.category;
+        filterService.filters.q = $scope.fields.search;
 
-        if (
-          event.target.elements["country"] &&
-          event.target.elements["category"]
-        ) {
-          country = event.target.elements["country"].value;
-          category = event.target.elements["category"].value;
+        if ($scope.mode === "search") {
+          $scope.fields.search = "";
         }
 
-        if (isRepeatFilter(country, category, search)) {
+        if ($scope.mode === "search" && filterService.filters.q === "") {
           return;
         }
 
-        filterService.country = country;
-        filterService.category = category;
-        filterService.q = search;
-
-        if ($scope.mode === "search") {
-          $scope.fieldSearch.value = "";
-        }
-
-        if ($scope.mode === "search" && filterService.q === "") return;
+        filterService.isDisabledFilter = true;
 
         $scope.getNews();
       };

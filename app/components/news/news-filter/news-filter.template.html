@@ -5,10 +5,15 @@
       <div class="row gap-3">
         <div class="col-auto p-0">
           <!-- country-filter -->
-          <select name="country" class="form-select form-select-sm">
+          <select
+            class="form-select form-select-sm"
+            name="country"
+            ng-model="fields.country"
+            ng-change="filterService.changeFilter([fields.country, fields.category], ['country', 'category'])"
+          >
             <option value="" selected>Страна</option>
             <option
-              ng-repeat="countryCode in countryList"
+              ng-repeat="countryCode in filterService.countryCodeList"
               value="{{ countryCode }}"
             >
               {{ countryCode }}
@@ -17,15 +22,27 @@
         </div>
         <div class="col-auto p-0">
           <!-- category-filter -->
-          <select name="category" class="form-select form-select-sm">
+          <select
+            class="form-select form-select-sm"
+            name="category"
+            ng-model="fields.category"
+            ng-change="filterService.changeFilter([fields.category, fields.country], ['category', 'country'])"
+          >
             <option value="general" selected>Категория</option>
-            <option ng-repeat="category in categoryList" value="{{ category }}">
+            <option
+              ng-repeat="category in filterService.categoryList"
+              value="{{ category }}"
+            >
               {{ category }}
             </option>
           </select>
         </div>
         <div class="col-auto p-0">
-          <button type="submit" class="btn btn-outline-primary btn-sm">
+          <button
+            type="submit"
+            class="btn btn-outline-primary btn-sm"
+            ng-disabled="filterService.isDisabledFilter"
+          >
             Фильтровать
           </button>
         </div>
@@ -39,10 +56,17 @@
         <input
           type="text"
           class="form-control"
-          ng-model="fieldSearch.value"
+          ng-model="fields.search"
+          ng-change="filterService.changeFilter([fields.search], ['q'])"
           placeholder="Введите название новости..."
         />
-        <button class="btn btn-outline-primary" type="submit">Поиск</button>
+        <button
+          class="btn btn-outline-primary"
+          type="submit"
+          ng-disabled="filterService.isDisabledFilter"
+        >
+          Поиск
+        </button>
       </div>
     </form>
   </div>

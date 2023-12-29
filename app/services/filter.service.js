@@ -1,9 +1,13 @@
 var feedApp = angular.module("feedApp");
 
 feedApp.service("filterService", function () {
-  this.category = "general";
-  this.country = "";
-  this.q = "";
+  this.filters = {
+    category: "general",
+    country: "",
+    q: "",
+  };
+
+  this.isDisabledFilter = true;
 
   this.countryCodeList = [
     "ac",
@@ -120,9 +124,49 @@ feedApp.service("filterService", function () {
     "technology",
   ];
 
+  this.isRepeatFilter = function (value, filterName) {
+    return value === this.filters[filterName];
+  };
+
+  this.changeFilter = function (values, names) {
+    if (!this.filters.hasOwnProperty(names[0])) {
+      throw new Error(
+        "[FilterService] Данного фильтра не существует " + names[0]
+      );
+    }
+
+    if (values.length !== names.length) {
+      throw new Error(
+        "[FilterService] Неправильно передано кол-во параметров: [values] [names]"
+      );
+    }
+
+    var countRepeats = 0;
+
+    for (var i = 0; i < names.length; i++) {
+      if (this.isRepeatFilter(values[i], names[i])) {
+        countRepeats++;
+      }
+    }
+
+    if (names[0] === "q") {
+      this.isDisabledFilter =
+        countRepeats === values.length || values[0] === "";
+      return;
+    }
+
+    this.isDisabledFilter = countRepeats === values.length;
+  };
+
   this.clear = function () {
-    this.category = "general";
-    this.country = "";
-    this.q = "";
+    this.isDisabledFilter = true;
+    var filters = Object.keys(this.filters);
+    for (var i = 0; i < filters.length; i++) {
+      if (filters[i] === "category") {
+        this.filters[filters[i]] = "general";
+        return;
+      }
+      this.filters[filters[i]] = "";
+    }
   };
 });
