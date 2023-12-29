@@ -42,6 +42,11 @@
   cursor: no-drop;
 }
 
+button:disabled {
+  pointer-events: unset !important;
+  cursor: no-drop !important;
+}
+
 @media (max-width: 1249px) {
   .card-text {
     font-size: 14px;
