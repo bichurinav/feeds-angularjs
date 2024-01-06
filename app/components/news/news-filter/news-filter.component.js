@@ -10,12 +10,9 @@ angular.module("newsFilter", []).component("newsFilter", {
     "$scope",
     "filterService",
     "newsDataService",
-    function ($scope, filterService, newsDataService) {
-      $scope.fields = {
-        country: "",
-        category: "general",
-        search: "",
-      };
+    "storageService",
+    function ($scope, filterService, newsDataService, storageService) {
+      $scope.fields = Object.assign({}, filterService.filters);
 
       $scope.filterService = filterService;
 
@@ -26,10 +23,10 @@ angular.module("newsFilter", []).component("newsFilter", {
 
         filterService.filters.country = $scope.fields.country;
         filterService.filters.category = $scope.fields.category;
-        filterService.filters.q = $scope.fields.search;
+        filterService.filters.q = $scope.fields.q;
 
         if ($scope.mode === "search") {
-          $scope.fields.search = "";
+          $scope.fields.q = "";
         }
 
         if ($scope.mode === "search" && filterService.filters.q === "") {
@@ -38,6 +35,7 @@ angular.module("newsFilter", []).component("newsFilter", {
 
         filterService.isDisabledFilter = true;
 
+        storageService.setData("filters", filterService.filters);
         $scope.getNews();
       };
 

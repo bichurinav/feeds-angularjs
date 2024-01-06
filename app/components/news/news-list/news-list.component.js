@@ -10,14 +10,19 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
     "newsDataService",
     "tabService",
     "filterService",
-    function ($scope, newsDataService, tabService, filterService) {
+    "storageService",
+    function (
+      $scope,
+      newsDataService,
+      tabService,
+      filterService,
+      storageService
+    ) {
       $scope.filterMode = "";
       $scope.errorMessage = "";
       $scope.newsData = newsDataService;
 
       function getNews() {
-        $scope.isLoading = true;
-
         var params = {
           page: newsDataService.currentPage,
         };
@@ -27,7 +32,10 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
           params.country = filterService.filters.country;
         } else {
           params.q = filterService.filters.q;
+          if (!params.q) return;
         }
+
+        $scope.isLoading = true;
 
         newsDataService.getNews(
           tabService.currentTab.code,
@@ -60,9 +68,11 @@ angular.module("newsList", ["newsCard", "newsFilter"]).component("newsList", {
 
       this.$onInit = function () {
         $scope.filterMode = this.filterMode;
-        if (tabService.currentTab.code === "top-headlines") {
-          getNews();
+        var storageFilters = storageService.getData("filters");
+        if (storageFilters) {
+          filterService.filters = storageFilters;
         }
+        getNews();
       };
     },
   ],
