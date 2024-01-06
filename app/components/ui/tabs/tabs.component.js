@@ -3,25 +3,12 @@
 angular.module("tabs", ["ngRoute"]).component("tabs", {
   templateUrl: "components/ui/tabs/tabs.template.html",
   controller: [
-    "$location",
     "$scope",
     "tabService",
-    function ($location, $scope, tabService) {
-      function updateTab() {
-        var currentPath = $location.path();
+    function ($scope, tabService) {
+      $scope.$on("$routeChangeStart", tabService.setTab.bind(tabService));
 
-        if (currentPath === tabService.currentTab.path) return;
-
-        var currentTab = $scope.tabs.find((tab) => tab.path === currentPath);
-
-        if (currentTab) {
-          tabService.setTab(currentTab);
-        }
-      }
-
-      $scope.$on("$routeChangeStart", updateTab);
-
-      this.$onInit = updateTab;
+      this.$onInit = tabService.setTab.bind(tabService);
 
       $scope.tabs = tabService.tabs;
 
