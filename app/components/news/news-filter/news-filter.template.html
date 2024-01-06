@@ -9,7 +9,7 @@
             class="form-select form-select-sm"
             name="country"
             ng-model="fields.country"
-            ng-change="filterService.changeFilter([fields.country, fields.category], ['country', 'category'])"
+            ng-change="filterService.setStatusFilter([fields.country, fields.category], ['country', 'category'])"
           >
             <option value="" selected>Страна</option>
             <option
@@ -26,7 +26,7 @@
             class="form-select form-select-sm"
             name="category"
             ng-model="fields.category"
-            ng-change="filterService.changeFilter([fields.category, fields.country], ['category', 'country'])"
+            ng-change="filterService.setStatusFilter([fields.category, fields.country], ['category', 'country'])"
           >
             <option value="general" selected>Категория</option>
             <option
@@ -56,8 +56,8 @@
         <input
           type="text"
           class="form-control"
-          ng-model="fields.search"
-          ng-change="filterService.changeFilter([fields.search], ['q'])"
+          ng-model="fields.q"
+          ng-change="filterService.setStatusFilter([fields.q], ['q'])"
           placeholder="Введите название новости..."
         />
         <button

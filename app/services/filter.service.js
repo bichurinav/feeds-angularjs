@@ -10,6 +10,7 @@ feedApp.service("filterService", function () {
   this.isDisabledFilter = true;
 
   this.countryCodeList = [
+    "ru",
     "ac",
     "ae",
     "am",
@@ -85,7 +86,6 @@ feedApp.service("filterService", function () {
     "ro",
     "rs",
     "rt",
-    "ru",
     "sa",
     "se",
     "sg",
@@ -128,7 +128,7 @@ feedApp.service("filterService", function () {
     return value === this.filters[filterName];
   };
 
-  this.changeFilter = function (values, names) {
+  this.setStatusFilter = function (values, names) {
     if (!this.filters.hasOwnProperty(names[0])) {
       throw new Error(
         "[FilterService] Данного фильтра не существует " + names[0]
